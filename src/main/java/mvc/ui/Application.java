@@ -24,7 +24,7 @@ public final class Application implements Runnable {
         return instance;
     }
 
-    private ApplicationDelegate delegate;
+    public ApplicationDelegate delegate;
 
     private Application() {
         // No op
@@ -34,7 +34,7 @@ public final class Application implements Runnable {
     public void run() {
         Optional.ofNullable(delegate).ifPresent(d -> d.applicationWillStart(this));
         NotificationDispatcher.instance().dispatch(new Notification(NOTIFICATION_APPLICATION_WILL_START));
-        // Some setup
+        // TODO: Some setup
         Optional.ofNullable(delegate).ifPresent(d -> d.applicationDidStart(this));
         NotificationDispatcher.instance().dispatch(new Notification(NOTIFICATION_APPLICATION_DID_START));
 
@@ -46,8 +46,16 @@ public final class Application implements Runnable {
 
         Optional.ofNullable(delegate).ifPresent(d -> d.applicationWillFinish(this));
         NotificationDispatcher.instance().dispatch(new Notification(NOTIFICATION_APPLICATION_WILL_FINISH));
-        // Finalization
+        // TODO: Finalization
         Optional.ofNullable(delegate).ifPresent(d -> d.applicationDidFinish(this));
         NotificationDispatcher.instance().dispatch(new Notification(NOTIFICATION_APPLICATION_DID_FINISH));
+    }
+
+    public void exit() {
+        exit(0);
+    }
+
+    public void exit(int code) {
+        System.exit(code);
     }
 }
