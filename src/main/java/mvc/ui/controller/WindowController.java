@@ -21,11 +21,15 @@ public abstract class WindowController extends Controller implements WindowListe
     @Override
     public void present() {
         this.window.setVisible(true);
+
+        super.present();
     }
 
     @Override
     public void dismiss() {
         this.window.setVisible(false);
+
+        super.dismiss();
     }
 
     // WindowListener
