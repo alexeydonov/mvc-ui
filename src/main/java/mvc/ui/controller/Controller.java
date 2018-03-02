@@ -1,18 +1,17 @@
 package mvc.ui.controller;
 
-import java.util.Optional;
-
 /**
  * @author Alexey Donov
  */
 public abstract class Controller {
-    public ControllerDelegate delegate;
+    /**
+     * Present controller
+     *
+     */
+    public abstract void present();
 
-    public void present() {
-        Optional.ofNullable(delegate).ifPresent(d -> d.controllerDidPresent(this));
-    }
-
-    public void dismiss() {
-        Optional.ofNullable(delegate).ifPresent(d -> d.controllerDidDismiss(this));
-    }
+    /**
+     * Dismiss controller
+     */
+    public abstract void dismiss();
 }

@@ -1,4 +1,4 @@
-package mvc.ui;
+package mvc.application;
 
 /**
  * @author Alexey Donov

@@ -1,33 +1,31 @@
-package mvc.ui;
+package mvc.application;
 
 import mvc.notifications.Notification;
 import mvc.notifications.NotificationDispatcher;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
  * @author Alexey Donov
  */
 public final class Application implements Runnable {
-    public static final String NOTIFICATION_APPLICATION_WILL_START = "com.alexeydonov.ui.ApplicationWillStart";
-    public static final String NOTIFICATION_APPLICATION_DID_START = "com.alexeydonov.ui.ApplicationDidStart";
-    public static final String NOTIFICATION_APPLICATION_WILL_FINISH = "com.alexeydonov.ui.ApplicationWillFinish";
-    public static final String NOTIFICATION_APPLICATION_DID_FINISH = "com.alexeydonov.ui.ApplicationDidFinish";
-
-    private static Application instance;
-
-    public static Application instance() {
-        if (instance == null) {
-            instance = new Application();
-        }
-
-        return instance;
-    }
+    public static final String NOTIFICATION_APPLICATION_WILL_START = "mvc.ApplicationWillStart";
+    public static final String NOTIFICATION_APPLICATION_DID_START = "mvc.ApplicationDidStart";
+    public static final String NOTIFICATION_APPLICATION_WILL_FINISH = "mvc.ApplicationWillFinish";
+    public static final String NOTIFICATION_APPLICATION_DID_FINISH = "mvc.ApplicationDidFinish";
 
     public ApplicationDelegate delegate;
 
-    private Application() {
-        // No op
+    public final Collection<String> arguments;
+
+    public Application(String[] arguments) {
+        this(Arrays.asList(arguments));
+    }
+
+    public Application(Collection<String> arguments) {
+        this.arguments = arguments;
     }
 
     @Override

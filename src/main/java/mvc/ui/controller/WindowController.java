@@ -8,10 +8,15 @@ import java.awt.event.WindowListener;
 /**
  * @author Alexey Donov
  */
-public abstract class WindowController extends Controller implements WindowListener {
-    protected final Window window;
+public abstract class WindowController<T extends Window> extends Controller implements WindowListener {
+    protected final T window;
 
-    protected abstract Window createWindow();
+    /**
+     * Return a Window subclass instance
+     *
+     * @return Window subclass instance
+     */
+    protected abstract T createWindow();
 
     public WindowController() {
         this.window = createWindow();
@@ -21,15 +26,11 @@ public abstract class WindowController extends Controller implements WindowListe
     @Override
     public void present() {
         this.window.setVisible(true);
-
-        super.present();
     }
 
     @Override
     public void dismiss() {
         this.window.setVisible(false);
-
-        super.dismiss();
     }
 
     // WindowListener
