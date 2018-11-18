@@ -3,9 +3,11 @@ package mvc.application;
 import mvc.notifications.Notification;
 import mvc.notifications.NotificationDispatcher;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableCollection;
 
 /**
  * @author Alexey Donov
@@ -21,7 +23,7 @@ public final class Application implements Runnable {
     public final Collection<String> arguments;
 
     public Application(String[] arguments) {
-        this(Arrays.asList(arguments));
+        this(unmodifiableCollection(asList(arguments)));
     }
 
     public Application(Collection<String> arguments) {
@@ -31,10 +33,10 @@ public final class Application implements Runnable {
     @Override
     public void run() {
         Optional.ofNullable(delegate).ifPresent(d -> d.applicationWillStart(this));
-        NotificationDispatcher.instance().dispatch(new Notification(NOTIFICATION_APPLICATION_WILL_START));
+        NotificationDispatcher.shared().dispatch(new Notification(NOTIFICATION_APPLICATION_WILL_START, null, this));
         // TODO: Some setup
         Optional.ofNullable(delegate).ifPresent(d -> d.applicationDidStart(this));
-        NotificationDispatcher.instance().dispatch(new Notification(NOTIFICATION_APPLICATION_DID_START));
+        NotificationDispatcher.shared().dispatch(new Notification(NOTIFICATION_APPLICATION_DID_START, null, this));
 
         try {
             Thread.currentThread().join();
@@ -43,10 +45,10 @@ public final class Application implements Runnable {
         }
 
         Optional.ofNullable(delegate).ifPresent(d -> d.applicationWillFinish(this));
-        NotificationDispatcher.instance().dispatch(new Notification(NOTIFICATION_APPLICATION_WILL_FINISH));
+        NotificationDispatcher.shared().dispatch(new Notification(NOTIFICATION_APPLICATION_WILL_FINISH, null, this));
         // TODO: Finalization
         Optional.ofNullable(delegate).ifPresent(d -> d.applicationDidFinish(this));
-        NotificationDispatcher.instance().dispatch(new Notification(NOTIFICATION_APPLICATION_DID_FINISH));
+        NotificationDispatcher.shared().dispatch(new Notification(NOTIFICATION_APPLICATION_DID_FINISH, null, this));
     }
 
     public void exit() {

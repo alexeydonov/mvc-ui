@@ -1,8 +1,6 @@
 package mvc.notifications;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.util.Map;
@@ -11,12 +9,18 @@ import java.util.Map;
  * @author Alexey Donov
  */
 @Data
-@AllArgsConstructor
 public final class Notification {
     private String name;
-    private Map<String, Object> payload;
+    private Map<String, ?> payload;
+    private Object sender;
 
-    public Notification(String name) {
-        this(name, null);
+    public Notification(@NonNull String name) {
+        this(name, null, null);
+    }
+    
+    public Notification(@NonNull String name, Map<String, ?> payload, Object sender) {
+        this.name = name;
+        this.payload = payload;
+        this.sender = sender;
     }
 }

@@ -1,8 +1,10 @@
 package mvc.notifications;
 
+import lombok.NonNull;
+
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import static java.util.Collections.emptySet;
 
@@ -12,7 +14,7 @@ import static java.util.Collections.emptySet;
 public final class NotificationDispatcher {
     private static NotificationDispatcher instance;
 
-    public static NotificationDispatcher instance() {
+    public static NotificationDispatcher shared() {
         if (instance == null) {
             instance = new NotificationDispatcher();
         }
@@ -20,13 +22,13 @@ public final class NotificationDispatcher {
         return instance;
     }
 
-    private ConcurrentMap<String, Collection<NotificationHandler>> handlers = new ConcurrentHashMap<>();
+    private final Map<String, Collection<NotificationHandler>> handlers = new ConcurrentHashMap<>();
 
     private NotificationDispatcher() {
         // No op
     }
 
-    private Collection<NotificationHandler> handlersForName(String name) {
+    private Collection<NotificationHandler> handlersForName(@NonNull String name) {
         if (!handlers.containsKey(name)) {
             handlers.put(name, emptySet());
         }
@@ -40,15 +42,7 @@ public final class NotificationDispatcher {
      * @param notification Notification
      * @throws IllegalArgumentException if notification is null
      */
-    public void dispatch(Notification notification) {
-        if (notification == null) {
-            throw new IllegalArgumentException("notification must not be null");
-        }
-
-        if (notification.getName() == null) {
-            throw new IllegalArgumentException("Notification's name must not be null");
-        }
-
+    public void dispatch(@NonNull Notification notification) {
         handlersForName(notification.getName()).forEach(handler -> handler.handleNotification(notification));
     }
 
@@ -59,15 +53,7 @@ public final class NotificationDispatcher {
      * @param handler Notification handler object
      * @throws IllegalArgumentException if name or handler is null
      */
-    public void addHandler(String name, NotificationHandler handler) {
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null");
-        }
-
-        if (handler == null) {
-            throw new IllegalArgumentException("handler must not be null");
-        }
-
+    public void addHandler(@NonNull String name, @NonNull NotificationHandler handler) {
         handlersForName(name).add(handler);
     }
 
@@ -78,15 +64,7 @@ public final class NotificationDispatcher {
      * @param handler Notification handler object
      * @throws IllegalArgumentException if name or handler is null
      */
-    public void removeHandler(String name, NotificationHandler handler) {
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null");
-        }
-
-        if (handler == null) {
-            throw new IllegalArgumentException("handler must not be null");
-        }
-
+    public void removeHandler(@NonNull String name, @NonNull NotificationHandler handler) {
         handlersForName(name).remove(handler);
     }
 }

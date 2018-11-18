@@ -4,8 +4,19 @@ package mvc.application;
  * @author Alexey Donov
  */
 public interface ApplicationDelegate {
-    void applicationWillStart(Application application);
-    void applicationDidStart(Application application);
-    void applicationWillFinish(Application application);
-    void applicationDidFinish(Application application);
+    default void applicationWillStart(Application application) {
+    
+    }
+    
+    default void applicationDidStart(Application application) {
+    
+    }
+    
+    default void applicationWillFinish(Application application) {
+    
+    }
+    
+    default void applicationDidFinish(Application application) {
+    
+    }
 }
